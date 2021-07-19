@@ -10,8 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.dto.ProductDTO;
+import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
+import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import com.devsuperior.dscatalog.repositories.ProductRepository;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
@@ -21,6 +24,8 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
+	@Autowired
+	private CategoryRepository categoryrepository;
 
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
@@ -43,28 +48,24 @@ public class ProductService {
 		return page.map(obj -> new ProductDTO(obj));
 	}
 
-
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
 		Product obj = new Product();
-	//	obj.setName( dto.getName() );
+		copyDTOtoEntity(dto, obj);
 		obj = repository.save(obj);
-		return new ProductDTO(obj);
-
-	
+		return new ProductDTO(obj);	
 	}
 
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
 		try {
 			Product obj = repository.getOne(id);
-	//		obj.setName(dto.getName());
+			copyDTOtoEntity(dto, obj);
 			obj = repository.save(obj);
 			return new ProductDTO(obj);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Product '" + id + "' not found");
 		}
-
 	}
 
 	// No @Transactional - we need to capture DB exception
@@ -77,6 +78,24 @@ public class ProductService {
 			throw new DatabaseException("Database iIntegrity violation");
 		}
 
+	}
+	
+	
+
+	/********** Private Methods *********/	
+	private void copyDTOtoEntity(ProductDTO dto, Product obj) {
+		//obj.setId(dto.get); //id is not inserted nor updated
+		obj.setName(dto.getName());
+		obj.setDescription(dto.getDescription());
+		obj.setPrice(dto.getPrice());
+		obj.setImgUrl(dto.getImgUrl());
+		obj.setDate(dto.getDate());
+		
+		obj.getCategories().clear(); //making sure it is empty
+		for(CategoryDTO catDTO : dto.getCategories()) {
+			Category category = categoryrepository.getOne(catDTO.getId());
+			obj.getCategories().add(category);
+		}
 	}
 
 
