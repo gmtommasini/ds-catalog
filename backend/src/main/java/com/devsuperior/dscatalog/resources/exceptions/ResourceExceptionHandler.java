@@ -30,8 +30,7 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(status).body(sd);
 	}
 
-	@ExceptionHandler(DatabaseException.class) // @ExceptionHandler with parameter identifies what type of exception
-												// this method will handle
+	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<StandardError> database(DatabaseException error, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError sd = new StandardError();
@@ -44,6 +43,5 @@ public class ResourceExceptionHandler {
 
 		return ResponseEntity.status(status).body(sd);
 	}
-	
 
 }
