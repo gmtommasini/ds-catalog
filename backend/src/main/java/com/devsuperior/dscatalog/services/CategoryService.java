@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
+import com.devsuperior.dscatalog.services.exceptions.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -23,6 +24,12 @@ public class CategoryService {
 //		List<CategoryDTO> listDTO = list.stream().map( (obj)-> new CategoryDTO(obj) ).collect(Collectors.toList());		
 //		return 	listDTO;
 		return list.stream().map(obj -> new CategoryDTO(obj)).collect(Collectors.toList());	
+	}
+
+	@Transactional(readOnly = true)
+	public CategoryDTO findById(Long id) {
+		Category obj = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Category '" + id + "' not found"));
+		return new CategoryDTO( obj );
 	}
 	
 //	public Optional<Category> findAll(Long id){
