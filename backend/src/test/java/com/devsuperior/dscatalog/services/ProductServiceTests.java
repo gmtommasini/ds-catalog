@@ -48,7 +48,7 @@ public class ProductServiceTests {
 	private CategoryRepository categoryRepository;
 
 	@BeforeEach
-	void setUp() {
+	void setUp() throws Exception {
 		product = Factory.createProduct();
 		validId = product.getId();
 		invalidId = 1000L;
