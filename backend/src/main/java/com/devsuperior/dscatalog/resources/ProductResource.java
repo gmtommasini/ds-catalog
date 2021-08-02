@@ -27,24 +27,30 @@ public class ProductResource {
 	private ProductService service;
 
 	/*
-	//Roots method
-	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAll(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy
-		) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		Page<ProductDTO> list = service.findAllPaged(pageRequest);
-		return ResponseEntity.ok().body(list);
-	}	*/
+	 * //Roots method
+	 * 
+	 * @GetMapping
+	 * public ResponseEntity<Page<ProductDTO>> findAll(
+	 * 
+	 * @RequestParam(value = "page", defaultValue = "0") Integer page,
+	 * 
+	 * @RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
+	 * 
+	 * @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+	 * 
+	 * @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
+	 * ) {
+	 * PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+	 * Page<ProductDTO> list = service.findAllPaged(pageRequest);
+	 * return ResponseEntity.ok().body(list);
+	 * }
+	 */
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
-		//With Pageable the framework instantiate the PageRequest and use the parameters: page, size, sort
+		// With Pageable the framework instantiate the PageRequest and use the parameters: page, size, sort
 		Page<ProductDTO> list = service.findAllPaged(pageable);
 		return ResponseEntity.ok().body(list);
-	}	
+	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
@@ -55,12 +61,14 @@ public class ProductResource {
 	@PostMapping()
 	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
 		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id,
+											@RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}
