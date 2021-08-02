@@ -2,12 +2,15 @@ package com.devsuperior.dscatalog.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -27,7 +30,8 @@ public class Category implements Serializable{
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //UTC
 	private Instant updatedAt;
 	
-	
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> products = new HashSet<>();
 	/********** Constructors *********/
 	public Category() {}
 
@@ -64,6 +68,10 @@ public class Category implements Serializable{
 
 	public Instant getUpdatedAt() {
 		return updatedAt;
+	}
+	
+	public Set<Product> getProducts(){
+		return products;
 	}
 
 	/********** Standard methods *********/
