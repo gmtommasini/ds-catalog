@@ -78,9 +78,10 @@ public class UserService {
 		} catch (EntityNotFoundException e) { // TO DO -- error when ROLE doesnt exist shown as user 
 			throw new ResourceNotFoundException(
 					e.getMessage());
-		} catch (Exception e) {
+		} 
+		//catch (Exception e) {
 			// TODO: handle exception
-		}
+	//	}
 	}
 
 	// No @Transactional - we need to capture DB exception
