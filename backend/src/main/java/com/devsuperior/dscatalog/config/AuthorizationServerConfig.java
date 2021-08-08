@@ -64,6 +64,7 @@ public class AuthorizationServerConfig
 			throws Exception {
 		TokenEnhancerChain chain = new TokenEnhancerChain();
 		chain.setTokenEnhancers(Arrays.asList(accessTokenConverter, tokenEnhancer) );
+		
 		endpoints.authenticationManager(authenticationManager)
 				.tokenStore(tokenStore)
 				.accessTokenConverter(accessTokenConverter)
