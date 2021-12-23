@@ -1,9 +1,10 @@
 // import React from 'react'; // This import is not necessary withing modules after React v17
+import './assets/styles/custom.scss'
 import './App.css';
 
 function App() {
   return (
-    <h1>Hello DSCatalog</h1>
+    <h1 >Hello DSCatalog</h1>
   );
 }
 
