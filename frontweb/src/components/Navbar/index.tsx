@@ -1,7 +1,9 @@
 // for each component the folder will be named as the same as the component, and the tsx file will be index
 
 import './styles.css';
-import 'bootstrap/js/src/collapse.js'
+import 'bootstrap/js/src/collapse.js';
+
+import './styles.css';
 
 const Navbar = () => {
    return (
